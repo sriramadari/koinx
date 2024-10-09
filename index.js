@@ -2,11 +2,25 @@ require('dotenv').config()
 
 const express = require('express');
 const db = require('./config/mongoose');
+const cron = require('node-cron');
+const fetchCryptoData = require('./services/fetchCryptoData');
+const PORT = process.env.PORT || 4000;
+
 
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 4000;
+
+// This cron job fetches crypto data from coingecko api for every 2 hours
+cron.schedule('0 */2 * * *', async () => {
+    try {
+      console.log('Cron job started: Fetching crypto data');
+      await fetchCryptoData();
+      console.log('Cron job completed: Crypto data fetched successfully');
+    } catch (error) {
+      console.error('Cron job failed: Error fetching crypto data', error);
+    }
+});
 
 app.get('/', (req, res) => {
     return res.send(
