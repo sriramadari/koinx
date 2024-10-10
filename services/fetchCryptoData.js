@@ -8,7 +8,9 @@ const COINS = ['bitcoin', 'matic-network', 'ethereum'];
 
 const fetchCryptoData = async () => {
   try {
-        const currentDate = new Date().toISOString().split('T')[0]; 
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + 2);
+        const nextDate = currentDate.toISOString().split('T')[0];
 
         const { data } = await axios.get(COINGECKO_API_URL, {
           params: {
@@ -23,12 +25,12 @@ const fetchCryptoData = async () => {
           const coinData = data[coin];
     
           if (coinData) {
-            let cryptoRecord = await Crypto.findOne({ coin, date: currentDate });
+            let cryptoRecord = await Crypto.findOne({ coin, date: nextDate });
     
             if (!cryptoRecord) {
               cryptoRecord = new Crypto({
                 coin,
-                date: currentDate,
+                date: nextDate,
                 prices: [],
                 marketCaps: [],
                 changes24h: []
