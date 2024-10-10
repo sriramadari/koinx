@@ -23,5 +23,6 @@ const cryptoSchema = new mongoose.Schema({
     }]
 });
   
-cryptoSchema.index({ coin: 1, date: -1 }); // Index to quickly find latest data
-  
+cryptoSchema.index({ coin: 1, date: -1 }); // indexing for quick retrireval of latest document
+
+module.exports = mongoose.model('Crypto', cryptoSchema);
