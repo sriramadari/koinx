@@ -5,7 +5,7 @@ const db = require('./config/mongoose');
 const cron = require('node-cron');
 const fetchCryptoData = require('./services/fetchCryptoData');
 const PORT = process.env.PORT || 4000;
-
+const cryptoRoutes = require('./routes/crypto');
 
 const app = express();
 app.use(express.json());
@@ -27,6 +27,8 @@ app.get('/', (req, res) => {
       'server on duty ... 🚀'
     );
   });
+
+app.use('/api', cryptoRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} 🚀`);
